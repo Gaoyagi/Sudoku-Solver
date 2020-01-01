@@ -19,31 +19,58 @@ answer = [[4,3,5,2,6,9,7,8,1], [6,8,2,5,7,1,4,9,3], [1,9,7,8,3,4,5,6,2],
           [5,1,9,3,2,6,8,7,4], [2,4,8,9,5,7,1,3,6], [7,6,3,4,1,8,2,5,9]]
 #https://dingo.sbs.arizona.edu/~sandiway/sudoku/examples.html
 
+
 guesses = []
 
 #check if a guess is valid in the current row
 #param: int(current col)
 #return: bool(True if valid)
 def checkRow(columnNum, value):
-    
+    #loops through the entire column
+    for x in range(9):
+        if sudoku[columnNum][x] == value:
+            return False
+    return True
 
 #check if the guess is valid in the curret column
 #param: int(current row)
 #return: bool(True if valid)
 def checkCol(rowNum, value):
+    #loops through entire row
+    for x in range(9):
+        if sudoku[x][rowNum] == value:
+            return False
+    return True
     
 
 #check if the guess is valid in the current square
 #param: int(current row), int(current col), int(guess)
 #return: bool(True if valid)
 def checkSquare(rowNum, colNum, value):
-
+    #the while's should set the coordinates the square's bottom right coordinate
+    tempRow = rowNum
+    tempCol = colNum
+    while tempRow+1%3 != 0:
+        tempRow+=1
+    while tempCol+1%3 != 0:
+        tempCol+=1
+    #loops through the entire square
+    for a in range(tempRow, tempRow-2):
+        for b in range(tempCol, tempCol-2):
+            if sudoku[a][b] == value:
+                return False
+    return True
+    
+    #checks every value int he square except the specified coordinates
 
 #calls all the guess validity checks at once
 #param: int(current row), int(current col), int(guess)
 #return: bool (True if valid)
 def check(rowNum, colNum, value):
-    
+    if checkRow(rowNum) and checkCol() and checkSquare():
+        return True
+    else:
+        return False
 
 #finds a valid guess for an empty spot, if no valid spot can be found, back track to the last previous guessed num validate that one
 #param: int(current row), int(current col), int(guess), list(list of currently guessed numbers)
