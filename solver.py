@@ -19,8 +19,18 @@ answer = [[4,3,5,2,6,9,7,8,1], [6,8,2,5,7,1,4,9,3], [1,9,7,8,3,4,5,6,2],
           [5,1,9,3,2,6,8,7,4], [2,4,8,9,5,7,1,3,6], [7,6,3,4,1,8,2,5,9]]
 #https://dingo.sbs.arizona.edu/~sandiway/sudoku/examples.html
 
-
 guesses = []
+
+#text display for the sudoku puzzle
+def display():
+    for x in range(9):
+        if x+1%3==0:
+            for z in range(19):
+                print("_")
+        for y in range(9):
+            print(sudoku[x][y] + " ")
+            if y+1%3 == 0:
+                print ("| ")
 
 #check if a guess is valid in the current row
 #param: int(current col)
@@ -43,7 +53,7 @@ def checkCol(rowNum, value):
     return True
     
 
-#check if the guess is valid in the current square
+#check if the guess is valid in the current square by checking every value in the square except the specified coordinates
 #param: int(current row), int(current col), int(guess)
 #return: bool(True if valid)
 def checkSquare(rowNum, colNum, value):
@@ -57,17 +67,19 @@ def checkSquare(rowNum, colNum, value):
     #loops through the entire square
     for a in range(tempRow, tempRow-2):
         for b in range(tempCol, tempCol-2):
-            if sudoku[a][b] == value:
-                return False
+            #dont check the the square that your trying to check for
+            if a!=rowNum and b!=colNum:
+                if sudoku[a][b] == value:
+                    return False
     return True
     
-    #checks every value int he square except the specified coordinates
+    
 
 #calls all the guess validity checks at once
 #param: int(current row), int(current col), int(guess)
 #return: bool (True if valid)
 def check(rowNum, colNum, value):
-    if checkRow(rowNum) and checkCol() and checkSquare():
+    if checkRow(rowNum, value) and checkCol(colNum, value) and checkSquare(rowNum, colValue):
         return True
     else:
         return False
