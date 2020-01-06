@@ -19,13 +19,29 @@ answer = [[4,3,5,2,6,9,7,8,1], [6,8,2,5,7,1,4,9,3], [1,9,7,8,3,4,5,6,2],
           [5,1,9,3,2,6,8,7,4], [2,4,8,9,5,7,1,3,6], [7,6,3,4,1,8,2,5,9]]
 #https://dingo.sbs.arizona.edu/~sandiway/sudoku/examples.html
 
-guesses = []
+#Number Node class, each node holds the value of a guess at a set of coordinates
+class Node: 
+    def __init__(self, value, row, col):    
+        #values
+        self.value = value
+        self.row = row
+        self.col = col
+        #pointers for Doubley linked list
+        self.next = None 
+        self.prev = None  
+   
+#Doubley Linked List class 
+class LinkedList: 
+    def __init__(self):  
+        self.head = None
+        self.tail = None
+        self.size = 0
 
 #text display for the sudoku puzzle
 def display():
     for x in range(9):
         if x+1%3==0:
-            for z in range(19):
+            for z in range(18):
                 print("_")
         for y in range(9):
             print(sudoku[x][y] + " ")
@@ -51,7 +67,6 @@ def checkCol(rowNum, value):
         if sudoku[x][rowNum] == value:
             return False
     return True
-    
 
 #check if the guess is valid in the current square by checking every value in the square except the specified coordinates
 #param: int(current row), int(current col), int(guess)
@@ -72,14 +87,12 @@ def checkSquare(rowNum, colNum, value):
                 if sudoku[a][b] == value:
                     return False
     return True
-    
-    
 
 #calls all the guess validity checks at once
 #param: int(current row), int(current col), int(guess)
 #return: bool (True if valid)
 def check(rowNum, colNum, value):
-    if checkRow(rowNum, value) and checkCol(colNum, value) and checkSquare(rowNum, colValue):
+    if checkRow(rowNum, value) and checkCol(colNum, value) and checkSquare(rowNum, colNum, value):
         return True
     else:
         return False
@@ -88,13 +101,28 @@ def check(rowNum, colNum, value):
 #param: int(current row), int(current col), int(guess), list(list of currently guessed numbers)
 #return: bool(succes of valid  spot)
 def validate(row, col, guess):
-    
+    valid = False
+    for num in range(9):
+        temp = Empty(num, row, col)
+        if temp not in empty:
+            valid = check(temp)
+    if not valid:
+        guessed-=1
+        validate(empty[guessed].row, empty[guessed].col)
 
-
-#main function, when called it should solve the puzzle
+#when called it should solve the puzzle
 #param: none
 #arg: none
 def solve():
    
+if __name__ == "__main__":
+    toGuess = LinkedList()
+    #sentinal node
+    sentinal = Node (-1,-1,-1)
+    for row in sudoku:
+        for col in row:
+            if sudoku[row][col] == 0:
+
+
 
 
