@@ -26,7 +26,6 @@ class Node:
         self.value = value
         self.row = row
         self.col = col
-        #pointers for Doubley linked list
         self.next = None 
         self.prev = None  
    
@@ -40,13 +39,17 @@ class LinkedList:
 #text display for the sudoku puzzle
 def display():
     for x in range(9):
-        if x+1%3==0:
-            for z in range(18):
-                print("_")
+        if x%3==0:
+            for z in range(23):
+                print("_", end='')
+            print('')
         for y in range(9):
-            print(sudoku[x][y] + " ")
-            if y+1%3 == 0:
-                print ("| ")
+            if y%3 == 0:
+                print ("| ", end='')
+            print(str(sudoku[x][y]) + " ", end='')
+        print('')
+    for z in range(23):
+        print("_", end='')
 
 #check if a guess is valid in the current row
 #param: int(current col)
@@ -97,32 +100,73 @@ def check(rowNum, colNum, value):
     else:
         return False
 
-#finds a valid guess for an empty spot, if no valid spot can be found, back track to the last previous guessed num validate that one
-#param: int(current row), int(current col), int(guess), list(list of currently guessed numbers)
-#return: bool(succes of valid  spot)
-def validate(row, col, guess):
-    valid = False
-    for num in range(9):
-        temp = Empty(num, row, col)
-        if temp not in empty:
-            valid = check(temp)
-    if not valid:
-        guessed-=1
-        validate(empty[guessed].row, empty[guessed].col)
-
-#when called it should solve the puzzle
-#param: none
-#arg: none
-def solve():
+# #solves the puzzle by finds a valid guess for an empty spot, if no valid spot can be found, back track to the last previous guessed num validate that one
+# #param: node(object for the currently guessed spot), linkedList(list of currently guessed numbers)
+# #return: bool(succes of valid  spot)
+# def solve(guess, guessed):
+#     valid = False
+#     for num in range(1,9):
+#         if temp not in empty:
+#             valid = check(temp)
+#     if not valid:
+#         guessed-=1
+#         validate(empty[guessed].row, empty[guessed].col)
    
+
 if __name__ == "__main__":
     toGuess = LinkedList()
     #sentinal node
-    sentinal = Node (-1,-1,-1)
-    for row in sudoku:
-        for col in row:
+    toGuess.head = Node (-1,-1,-1)
+    toGuess.tail = toGuess.head
+    #iterate through the puzzle to find all the spots to guess and adds them to the linked list
+    for row in range(9):
+        for col in range(9):
             if sudoku[row][col] == 0:
+                toGuess.tail.next = Node(row, col, 0)
+                temp = toGuess.tail
+                toGuess.tail = toGuess.tail.next
+                toGuess.prev = temp
+    #test to see if I get all the spots  to guess correctly
+    temp = toGuess.head
+    while temp != None:
+        temp = temp.next
+        print("row: "+ str(temp.row))
+        print("col: "+ str(temp.col))
+        print("")
 
 
+    # print("""rules of Sudoku: Your goal is to fill the grid with numbers. Each spot must be a  number within 1-9. \n
+    #          A guess is valid if all 3 of the following things are satisfied:  \n
+    #             1) there is no identical number within the sub square \n
+    #             2) there is no identical number in the same row \n
+    #             3) there is now identical number in the same column""")
+    # display()
+    # solved = False
+    # while not solved:
+    #     answer = input("Do you give up and want it solved for you? (press y for yes, anything else for no): ")
+    #     if answer == 'y':
+    #         solve()
+    #         solved = True
+    #     coordinates = False
+    #     while not coordinates:
+    #         row = input("enter which spot you wish to guess by inputting a row then a column number: \n")
+    #         col = input
+    #         if int(row)>9 or int(row)<1 or int(col)>9 or int(col)<1:
+    #             print("Invalid coordinates")
+    #         elif row == "" or col == "":
+    #             solve()
+    #             break
+    #         else:
+    #             coordinates = True
+    #     valid = False        
+    #     while not valid:
+    #         guess =  input("enter your guess: ")
+    #         if int(guess)>9 or int(guess)<1:
+    #             print("invalid guess")
+    #         else:
+    #             valid = True
+
+    #     if sudoku == answer:
+    #         solved = True
 
 
