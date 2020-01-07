@@ -126,47 +126,47 @@ if __name__ == "__main__":
                 temp = toGuess.tail
                 toGuess.tail = toGuess.tail.next
                 toGuess.prev = temp
-    #test to see if I get all the spots  to guess correctly
-    temp = toGuess.head.next
-    while temp != None:
-        print("row: "+ str(temp.row))
-        print("col: "+ str(temp.col))
-        print("")
-        temp = temp.next
+    # #test to see if I get all the spots  to guess correctly
+    # temp = toGuess.head.next
+    # while temp != None:
+    #     print("row: "+ str(temp.row))
+    #     print("col: "+ str(temp.col))
+    #     print("")
+    #     temp = temp.next
 
 
-    # print("""rules of Sudoku: Your goal is to fill the grid with numbers. Each spot must be a  number within 1-9. \n
-    #          A guess is valid if all 3 of the following things are satisfied:  \n
-    #             1) there is no identical number within the sub square \n
-    #             2) there is no identical number in the same row \n
-    #             3) there is now identical number in the same column""")
-    # display()
-    # solved = False
-    # while not solved:
-    #     answer = input("Do you give up and want it solved for you? (press y for yes, anything else for no): ")
-    #     if answer == 'y':
-    #         solve()
-    #         solved = True
-    #     coordinates = False
-    #     while not coordinates:
-    #         row = input("enter which spot you wish to guess by inputting a row then a column number: \n")
-    #         col = input
-    #         if int(row)>9 or int(row)<1 or int(col)>9 or int(col)<1:
-    #             print("Invalid coordinates")
-    #         elif row == "" or col == "":
-    #             solve()
-    #             break
-    #         else:
-    #             coordinates = True
-    #     valid = False        
-    #     while not valid:
-    #         guess =  input("enter your guess: ")
-    #         if int(guess)>9 or int(guess)<1:
-    #             print("invalid guess")
-    #         else:
-    #             valid = True
+    print("""rules of Sudoku: Your goal is to fill the grid with numbers. Each spot must be a  number within 1-9.
+             A guess is valid if all 3 of the following things are satisfied: 
+                1) there is no identical number within the sub square 
+                2) there is no identical number in the same row 
+                3) there is now identical number in the same column""")
+    display()
+    print('')
+    solved = False
+    while not solved:
+        # answer = input("Do you give up and want it solved for you? (press y for yes, anything else for no): ")
+        # if answer == 'y':
+        #     solve()
+        #     solved = True
+        #checks if the user's guess is valid
+        valid = False
+        while not valid:
+            row = input("Enter a guess (in order of row, then column, then value): ")
+            if int(row)>9 or int(row)<1:
+                print("Invalid Row Number")
+                continue
+            col = input()
+            if int(col)>9 or int(col)<1:
+                print("Invalid Column number")
+                continue
+            value = input()
+            if int(value)>9 or int(value)<1:
+                print("invalid Value")
+        
+            valid = True
+        
 
-    #     if sudoku == answer:
-    #         solved = True
+        if sudoku == answer:
+            solved = True
 
 
