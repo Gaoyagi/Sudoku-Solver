@@ -21,7 +21,7 @@ answer = [[4,3,5,2,6,9,7,8,1], [6,8,2,5,7,1,4,9,3], [1,9,7,8,3,4,5,6,2],
 
 #Number Node class, each node holds the value of a guess at a set of coordinates
 class Node: 
-    def __init__(self, value, row, col):    
+    def __init__(self, row, col, value):    
         #values
         self.value = value
         self.row = row
@@ -127,12 +127,12 @@ if __name__ == "__main__":
                 toGuess.tail = toGuess.tail.next
                 toGuess.prev = temp
     #test to see if I get all the spots  to guess correctly
-    temp = toGuess.head
+    temp = toGuess.head.next
     while temp != None:
-        temp = temp.next
         print("row: "+ str(temp.row))
         print("col: "+ str(temp.col))
         print("")
+        temp = temp.next
 
 
     # print("""rules of Sudoku: Your goal is to fill the grid with numbers. Each spot must be a  number within 1-9. \n
