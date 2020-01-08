@@ -78,13 +78,13 @@ def checkSquare(rowNum, colNum, value):
     #the while's should set the coordinates the square's bottom right coordinate
     tempRow = rowNum
     tempCol = colNum
-    while tempRow+1%3 != 0:
+    while (tempRow+1)%3 != 0:
         tempRow+=1
-    while tempCol+1%3 != 0:
+    while (tempCol+1)%3 != 0:
         tempCol+=1
     #loops through the entire square
-    for a in range(tempRow, tempRow-2):
-        for b in range(tempCol, tempCol-2):
+    for a in range(tempRow, tempRow-2,-1):
+        for b in range(tempCol, tempCol-2,-1):
             #dont check the the square that your trying to check for
             if a!=rowNum and b!=colNum:
                 if sudoku[a][b] == value:
@@ -92,13 +92,21 @@ def checkSquare(rowNum, colNum, value):
     return True
 
 #calls all the guess validity checks at once
-#param: int(current row), int(current col), int(guess)
+#param: Node(the current  guess)  
 #return: bool (True if valid)
-def check(rowNum, colNum, value):
-    if checkRow(rowNum, value) and checkCol(colNum, value) and checkSquare(rowNum, colNum, value):
+def check(guess):
+    if checkRow(guess.row, guess.value) and checkCol(guess.col, guess.value) and checkSquare(guess.row, guess.col, guess.value):
         return True
     else:
         return False
+
+def find(rowNum, colNum, lList):
+    found = lList.head
+    while found != None:
+        if found.row == rowNum  and found.col == colNum:
+            break
+        found = found.next
+    return found
 
 # #solves the puzzle by finds a valid guess for an empty spot, if no valid spot can be found, back track to the last previous guessed num validate that one
 # #param: node(object for the currently guessed spot), linkedList(list of currently guessed numbers)
@@ -125,7 +133,10 @@ if __name__ == "__main__":
                 toGuess.tail.next = Node(row, col, 0)
                 temp = toGuess.tail
                 toGuess.tail = toGuess.tail.next
-                toGuess.prev = temp
+                toGuess.tail.prev = temp
+
+
+   
     # #test to see if I get all the spots  to guess correctly
     # temp = toGuess.head.next
     # while temp != None:
@@ -134,16 +145,26 @@ if __name__ == "__main__":
     #     print("")
     #     temp = temp.next
 
+    # #test to see if i implemented the doubly linked list correctly
+    # temp = toGuess.tail
+    # while temp.value != -1:
+    #     print("row: "+ str(temp.row))
+    #     print("col: "+ str(temp.col))
+    #     print("")
+    #     temp = temp.prev
+
 
     print("""rules of Sudoku: Your goal is to fill the grid with numbers. Each spot must be a  number within 1-9.
-             A guess is valid if all 3 of the following things are satisfied: 
+                A guess is valid if all 3 of the following things are satisfied: 
                 1) there is no identical number within the sub square 
                 2) there is no identical number in the same row 
                 3) there is now identical number in the same column""")
-    display()
-    print('')
+   
     solved = False
     while not solved:
+        display()
+        print('')
+        guess = None
         # answer = input("Do you give up and want it solved for you? (press y for yes, anything else for no): ")
         # if answer == 'y':
         #     solve()
@@ -151,22 +172,37 @@ if __name__ == "__main__":
         #checks if the user's guess is valid
         valid = False
         while not valid:
-            row = input("Enter a guess (in order of row, then column, then value): ")
+            row = input("Enter a guess (in order of row, then column, then value): \n")
             if int(row)>9 or int(row)<1:
                 print("Invalid Row Number")
                 continue
+
             col = input()
             if int(col)>9 or int(col)<1:
                 print("Invalid Column number")
                 continue
+
+            coordinates = find(int(row)-1, int(col)-1, toGuess)
+            if coordinates == None:
+                print("that spot doesn't need to be guessed")
+                continue
+
             value = input()
             if int(value)>9 or int(value)<1:
                 print("invalid Value")
-        
+            
             valid = True
-        
+            guess = Node(int(row)-1, int(col)-1, int(value))
+
+
+        if check(guess):
+            print("Success!")
+            sudoku[guess.row][guess.col] = guess.value
+        else:
+            print("Doesn't work")
 
         if sudoku == answer:
             solved = True
+            print("You've solved it!")
 
 
