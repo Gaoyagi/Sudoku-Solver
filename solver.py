@@ -133,19 +133,15 @@ def solve(current):
                     sudoku[current.row][current.col] = current.value
                     print(f"guess for {current.row}, {current.col} is {current.value}")
                     break
-
-
-        
         if backtrack:
             print("BACKTRACK")
+            current.old.clear()
             current.value = 0
             sudoku[current.row][current.col] = 0
             current = current.prev
             print(f"{current.row}, {current.col} is {current.value}")
         else:
             print("Advance")
-            current.value = current.possible[0]
-            if c
             current = current.next
         solve(current)
 
