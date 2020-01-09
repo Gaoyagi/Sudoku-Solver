@@ -26,6 +26,7 @@ class Node:
         self.value = value
         self.row = row
         self.col = col
+        self.old = []
         self.next = None 
         self.prev = None  
    
@@ -54,20 +55,21 @@ def display():
 #check if a guess is valid in the current row
 #param: int(current col)
 #return: bool(True if valid)
-def checkRow(columnNum, value):
+def checkRow(rowNum, value):
     #loops through the entire column
     for x in range(9):
-        if sudoku[columnNum][x] == value:
+        if sudoku[rowNum][x] == value:
             return False
     return True
 
 #check if the guess is valid in the curret column
 #param: int(current row)
 #return: bool(True if valid)
-def checkCol(rowNum, value):
+def checkCol(colNum, value):
     #loops through entire row
     for x in range(9):
-        if sudoku[x][rowNum] == value:
+        # print(colNum)
+        if sudoku[x][colNum] == value:
             return False
     return True
 
@@ -82,9 +84,11 @@ def checkSquare(rowNum, colNum, value):
         tempRow+=1
     while (tempCol+1)%3 != 0:
         tempCol+=1
+    # print(f"{tempRow}, {tempCol}")
+    # print(f"{tempRow-2}, {tempCol-2}")
     #loops through the entire square
-    for a in range(tempRow, tempRow-2,-1):
-        for b in range(tempCol, tempCol-2,-1):
+    for a in range(tempRow, tempRow-3,-1):
+        for b in range(tempCol, tempCol-3,-1):
             #dont check the the square that your trying to check for
             if a!=rowNum and b!=colNum:
                 if sudoku[a][b] == value:
@@ -95,7 +99,7 @@ def checkSquare(rowNum, colNum, value):
 #param: Node(the current  guess)  
 #return: bool (True if valid)
 def check(guess):
-    if checkRow(guess.row, guess.value) and checkCol(guess.col, guess.value) and checkSquare(guess.row, guess.col, guess.value):
+    if checkRow(guess.row, guess.value) and checkSquare(guess.row, guess.col, guess.value) and checkCol(guess.col, guess.value):
         return True
     else:
         return False
@@ -108,17 +112,47 @@ def find(rowNum, colNum, lList):
         found = found.next
     return found
 
-# #solves the puzzle by finds a valid guess for an empty spot, if no valid spot can be found, back track to the last previous guessed num validate that one
-# #param: node(object for the currently guessed spot), linkedList(list of currently guessed numbers)
-# #return: bool(succes of valid  spot)
-# def solve(guess, guessed):
-#     valid = False
-#     for num in range(1,9):
-#         if temp not in empty:
-#             valid = check(temp)
-#     if not valid:
-#         guessed-=1
-#         validate(empty[guessed].row, empty[guessed].col)
+#solves the puzzle by going through every empoty spot and finding a valid number for it;
+    #if no valid number can be found, se the current value to 0 and back track to the previous guessed num and find another valid num for that spot
+    #repeat the prev until a new valid number can be found
+#param: node(object for the currently guessed spot)
+#return: none
+def solve(current):
+    if current != None:
+        backtrack = True
+        current.old.append(current.value)
+        newNum = False
+        #checks all possible values for the spot for the first valid number except the one it already is
+        for value in range(1,10):
+            if value not in current.old:
+                current.value = value
+                if check(current):
+                    newNum = True
+                    backtrack = False
+                    display()
+                    sudoku[current.row][current.col] = current.value
+                    print(f"guess for {current.row}, {current.col} is {current.value}")
+                    break
+
+
+        
+        if backtrack:
+            print("BACKTRACK")
+            current.value = 0
+            sudoku[current.row][current.col] = 0
+            current = current.prev
+            print(f"{current.row}, {current.col} is {current.value}")
+        else:
+            print("Advance")
+            current.value = current.possible[0]
+            if c
+            current = current.next
+        solve(current)
+
+    else:
+        print("Done")
+
+
    
 
 if __name__ == "__main__":
@@ -165,10 +199,14 @@ if __name__ == "__main__":
         display()
         print('')
         guess = None
-        # answer = input("Do you give up and want it solved for you? (press y for yes, anything else for no): ")
-        # if answer == 'y':
-        #     solve()
-        #     solved = True
+
+        answer = input("Do you give up and want it solved for you? (press y for yes, anything else for no): ")
+        if answer == 'y':
+            solve(toGuess.head.next)
+            print("this was the answer: ")
+            display()
+            break
+
         #checks if the user's guess is valid
         valid = False
         while not valid:
