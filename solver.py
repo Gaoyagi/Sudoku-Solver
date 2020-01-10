@@ -52,6 +52,8 @@ def display():
     for z in range(23):
         print("_", end='')
 
+    print("")
+
 #check if a guess is valid in the current row
 #param: int(current col)
 #return: bool(True if valid)
@@ -131,7 +133,6 @@ def solve(current):
                     backtrack = False
                     display()
                     sudoku[current.row][current.col] = current.value
-                    print(f"guess for {current.row}, {current.col} is {current.value}")
                     break
         if backtrack:
             print("BACKTRACK")
@@ -139,9 +140,9 @@ def solve(current):
             current.value = 0
             sudoku[current.row][current.col] = 0
             current = current.prev
-            print(f"{current.row}, {current.col} is {current.value}")
         else:
             print("Advance")
+            print(f"{current.row}, {current.col} is {current.value}")
             current = current.next
         solve(current)
 
